@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/drawer_menu__nav_map">
+    <fragment
+        android:id="@+id/drawer_menu__nav_map"
+        android:name="com.leknos.navigationdrawerexample.fragments.MapsFragment"
+        android:label="@string/map"
+        tools:layout="@layout/fragment_maps" />
+    <fragment
+        android:id="@+id/drawer_menu__nav_list"
+        android:name="com.leknos.navigationdrawerexample.fragments.ListFragment"
+        android:label="@string/list"
+        tools:layout="@layout/fragment_list" />
+    <fragment
+        android:id="@+id/drawer_menu__nav_location_info"
+        android:name="com.leknos.navigationdrawerexample.fragments.LocationInfoFragment"
+        android:label="@string/location_info"
+        tools:layout="@layout/fragment_location_info" />
+</navigation>

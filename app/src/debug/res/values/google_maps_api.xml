@@ -1,0 +1,22 @@
+<resources>
+    <!--
+    To get one, follow this link, follow the directions and press "Create" at the end:
+
+    https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=3F:BC:65:B9:0C:2E:A3:5A:2E:73:D8:09:D4:7D:00:1D:E5:D3:25:D8%3Bcom.leknos.navigationdrawerexample
+
+    You can also add your credentials to an existing key, using these values:
+
+    Package name:
+    com.leknos.navigationdrawerexample
+
+    SHA-1 certificate fingerprint:
+    3F:BC:65:B9:0C:2E:A3:5A:2E:73:D8:09:D4:7D:00:1D:E5:D3:25:D8
+
+    Alternatively, follow the directions here:
+    https://developers.google.com/maps/documentation/android/start#get-key
+
+    Once you have your key (it starts with "AIza"), replace the "google_maps_key"
+    string in this file.
+    -->
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyDOFL3RF5CnivIQDN-OYNxQn_T-s4SMmCA</string>
+</resources>
