@@ -22,6 +22,7 @@ import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity{
 
+    public static final String APP_PREFERENCES = "my_settings";
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private FloatingActionButton fab;
