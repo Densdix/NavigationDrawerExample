@@ -12,13 +12,17 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.leknos.navigationdrawerexample.services.LocationService;
 
 public class MainActivity extends AppCompatActivity{
 
@@ -29,6 +33,7 @@ public class MainActivity extends AppCompatActivity{
     private NavigationView navigationView;
     private AppBarConfiguration mAppBarConfiguration;
     public int x;
+    private Intent serviceIntent;
 
     public int getX() {
         return x;
@@ -85,6 +90,8 @@ public class MainActivity extends AppCompatActivity{
                 return true;
             }
         });
+
+        serviceIntent = new Intent(this, LocationService.class);
     }
 
     @Override
@@ -105,12 +112,27 @@ public class MainActivity extends AppCompatActivity{
         switch (item.getItemId()){
             case R.id.menu__service_start :
                 Toast.makeText(this, "Service has been started", Toast.LENGTH_SHORT).show();
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+                    MainActivity.this.startForegroundService(serviceIntent);
+                }else{
+                    startService(serviceIntent);
+                }
                 // TODO: 31.07.2020 Add a behavior for STARTING_SERVICE instead of stub
                 return true;
             case R.id.menu__service_stop:
+                stopService(serviceIntent);
                 // TODO: 31.07.2020 Add a behavior for STOPPING SERVICE instead of stub
                 Toast.makeText(this, "Service has been stopped", Toast.LENGTH_SHORT).show();
                 return true;
+            case R.id.menu__center_map_picture:
+                ImageView imageView = findViewById(R.id.fragment_maps__location_marker);
+                if(item.getTitle().equals(getString(R.string.hide_location_marker))){
+                    item.setTitle(getString(R.string.show_location_marker));
+                    imageView.setVisibility(View.INVISIBLE);
+                }else{
+                    item.setTitle(getString(R.string.hide_location_marker));
+                    imageView.setVisibility(View.VISIBLE);
+                }
             default: return super.onOptionsItemSelected(item);
         }
     }

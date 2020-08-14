@@ -6,4 +6,7 @@
     <item
         android:id="@+id/menu__service_stop"
         android:title="@string/stop_service" />
+    <item
+        android:id="@+id/menu__center_map_picture"
+        android:title="@string/hide_location_marker" />
 </menu>

@@ -4,9 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragments.LocationInfoFragment">
+    tools:context=".ui.LocationInfoFragment">
 
     <TextView
+        android:id="@+id/fragment_location_info__text_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="@string/tab_2"

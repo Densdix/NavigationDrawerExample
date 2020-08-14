@@ -18,4 +18,6 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="nav_header_title">User name</string>
     <string name="nav_header_subtitle">mail@google.com</string>
+    <string name="hide_location_marker">Hide Location Marker</string>
+    <string name="show_location_marker">Show Location Marker</string>
 </resources>

@@ -1,10 +1,9 @@
-package com.leknos.navigationdrawerexample.fragments;
+package com.leknos.navigationdrawerexample.ui;
 
 import android.os.Bundle;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 
 import android.view.LayoutInflater;
 import android.view.View;

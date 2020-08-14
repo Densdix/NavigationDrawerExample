@@ -1,4 +1,4 @@
-package com.leknos.navigationdrawerexample.fragments;
+package com.leknos.navigationdrawerexample.ui;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -39,15 +39,12 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMyLocationButt
     private GoogleMap mMap;
     private FusedLocationProviderClient client;
 
-    private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
-
     public static final String APP_PREFERENCES_LATITUDE = "current_latitude";
     public static final String APP_PREFERENCES_LONGITUDE = "current_longitude";
+    public static final int CAMERA_ZOOM = 15;
 
     private double currentLatitude;
     private double currentLongitude;
-
-    private boolean mLocationPermissionGranted;
 
     @Nullable
     @Override
@@ -69,7 +66,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMyLocationButt
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Moving to yours current position " + mLocationPermissionGranted, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Moving to yours current position", Toast.LENGTH_SHORT).show();
                 cameraMoveToCurrentPosition();
             }
         });
@@ -83,33 +80,18 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMyLocationButt
     }
 
     public void cameraMoveToLastPosition() {
-
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        client.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
-                if (location != null) {
-
-                    if (sharedPreferences.contains(APP_PREFERENCES_LATITUDE) && sharedPreferences.contains(APP_PREFERENCES_LONGITUDE)) {
-                        currentLatitude = Double.parseDouble(sharedPreferences.getString(APP_PREFERENCES_LATITUDE, "0.0"));
-                        currentLongitude = Double.parseDouble(sharedPreferences.getString(APP_PREFERENCES_LONGITUDE, "0.0"));
-                        if (currentLatitude == 0.0 && currentLongitude == 0.0) {
-                            currentLatitude = location.getLatitude();
-                            currentLongitude = location.getLongitude();
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putString(APP_PREFERENCES_LATITUDE, String.valueOf(currentLatitude));
-                            editor.putString(APP_PREFERENCES_LONGITUDE, String.valueOf(currentLongitude));
-                            editor.apply();
-                        }
-                    }
-                    LatLng currentLocation = new LatLng(currentLatitude, currentLongitude);
-                    CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(currentLocation, 10);
-                    mMap.animateCamera(cameraUpdate);
-                }
+        if (sharedPreferences.contains(APP_PREFERENCES_LATITUDE) && sharedPreferences.contains(APP_PREFERENCES_LONGITUDE)) {
+            currentLatitude = Double.parseDouble(sharedPreferences.getString(APP_PREFERENCES_LATITUDE, "0.0"));
+            currentLongitude = Double.parseDouble(sharedPreferences.getString(APP_PREFERENCES_LONGITUDE, "0.0"));
+            if (currentLatitude == 0.0 && currentLongitude == 0.0) {
+                //default for firs app run
+                //coords of Nikolaev 46.9762, 31.9975
+                currentLatitude = 46.9762;
+                currentLongitude = 31.9975;
             }
-        });
+        }
+        updateCamera(currentLatitude, currentLongitude);
+        //mMap.addMarker(new MarkerOptions().position(new LatLng(currentLatitude, currentLongitude)).title("Last Position"));
     }
 
     public void cameraMoveToCurrentPosition() {
@@ -121,21 +103,33 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMyLocationButt
             public void onSuccess(Location location) {
                 currentLatitude = location.getLatitude();
                 currentLongitude = location.getLongitude();
-                LatLng currentLocation = new LatLng(currentLatitude, currentLongitude);
-                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(currentLocation, 10);
-                mMap.animateCamera(cameraUpdate);
+                updateCamera(currentLatitude, currentLongitude);
             }
         });
     }
 
-    @Override
-    public boolean onMyLocationButtonClick() {
-        return false;
+    public void updateCamera(double currentLatitude, double currentLongitude){
+        LatLng currentLocation = new LatLng(currentLatitude, currentLongitude);
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(currentLocation, CAMERA_ZOOM);
+        mMap.animateCamera(cameraUpdate);
     }
 
     @Override
     public void onMyLocationClick(@NonNull Location location) {
+        String locationInfo = "Current location:\n" +
+                "latitude = "+location.getLatitude()+"\n"+
+                "longitude = "+location.getLongitude()+"\n"+
+                "speed = "+location.getSpeed()+"\n"+
+                "time = "+location.getTime()+"\n";
+        Toast.makeText(getContext(), locationInfo + location, Toast.LENGTH_LONG).show();
+    }
 
+    @Override
+    public boolean onMyLocationButtonClick() {
+        Toast.makeText(getContext(), "MyLocation button clicked", Toast.LENGTH_SHORT).show();
+        // Return false so that we don't consume the event and the default behavior still occurs
+        // (the camera animates to the user's current position).
+        return false;
     }
 
     @Override
@@ -146,13 +140,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMyLocationButt
         googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney2"));
 
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
+
             return;
         }
         mMap.setMyLocationEnabled(true);
@@ -160,7 +148,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMyLocationButt
         //off visibility of default button by google maps
         mMap.getUiSettings().setMyLocationButtonEnabled(false);
         //mMap.setOnMyLocationButtonClickListener(this);
-        //mMap.setOnMyLocationClickListener(this);
+        mMap.setOnMyLocationClickListener(this);
         cameraMoveToLastPosition();
         //googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
