@@ -69,10 +69,11 @@ public class LocationInfoFragment extends Fragment {
                 mLongitude = location.getLongitude();
                 mSpeed = location.getSpeed();
 
-                textView.setText("latitude = "+ mLatitude + "\n" +
-                        "longitude = "+mLongitude  + "\n" +
-                        "speed = "+mSpeed  + "\n" +
-                        "distance = "+mDistance+ " km.");
+//                textView.setText("latitude = "+ mLatitude + "\n" +
+//                        "longitude = "+mLongitude  + "\n" +
+//                        "speed = "+mSpeed  + "\n" +
+//                        "distance = "+mDistance+ " km.");
+                textView.setText(getString(R.string.location_data_info, mLatitude, mLongitude, mSpeed, mDistance));
             }
         });
 
@@ -88,10 +89,7 @@ public class LocationInfoFragment extends Fragment {
                         mDistance = DistanceBetweenTwoPoints.getDistance(mLatitude, mLongitude, la, lo);
                         mLatitude = la;
                         mLongitude = lo;
-                        textView.setText("latitude = "+ la + "\n" +
-                                "longitude = "+lo  + "\n" +
-                                "speed = "+mSpeed  + "\n" +
-                                "distance = "+String.format("%.2f", mDistance)+ " km.");
+                        textView.setText(getString(R.string.location_data_info, la, lo, mSpeed, mDistance));
                         Log.d(TAG, "onReceived!: "+la+lo);
                     }
                 }
