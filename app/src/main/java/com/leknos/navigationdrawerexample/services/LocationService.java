@@ -8,8 +8,13 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.GpsSatellite;
+import android.location.GpsStatus;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Looper;
 import android.util.Log;
@@ -24,11 +29,22 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.leknos.navigationdrawerexample.MainActivity;
 
 public class LocationService extends Service {
     private static final String TAG = "LocationService";
     private FusedLocationProviderClient fusedLocationProviderClient;
+    private LocationManager locationManager;
+
+    private boolean isGPSEnabled = false;
+    private boolean isNetworkEnabled = false;
+
+    public String szSatellitesInUse, szSatellitesInView;
+
+    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 0; // 0 meters
+    private static final long MIN_TIME_BW_UPDATES = 1000; //1 second
+
+    private GpsStatus mGpsStatus;
+    protected GpsListener gpsListener = new GpsListener();
 
     @Nullable
     @Override
@@ -40,13 +56,14 @@ public class LocationService extends Service {
     public void onCreate() {
         super.onCreate();
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
         if (Build.VERSION.SDK_INT >= 26) {
             String CHANNEL_ID = "my_channel_01";
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "MyChannel", NotificationManager.IMPORTANCE_DEFAULT);
             ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).createNotificationChannel(channel);
             Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                    .setContentTitle("")
-                    .setContentText("")
+                    .setContentTitle("NavigationDrawerExample")
+                    .setContentText("updating location every 4 seconds")
                     .build();
             startForeground(1, notification);
         }
@@ -57,6 +74,7 @@ public class LocationService extends Service {
         getLocation();
         return START_NOT_STICKY;
 
+
     }
 
     private void getLocation() {
@@ -65,16 +83,56 @@ public class LocationService extends Service {
         locationRequest.setInterval(4000);
         locationRequest.setFastestInterval(2000);
 
+        locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
+        isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return;
         }
+
+        locationManager.addGpsStatusListener(gpsListener);
+        locationManager.getGpsStatus(null);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        });
+
+        mGpsStatus = locationManager.getGpsStatus(mGpsStatus);
+        Iterable<GpsSatellite> satellites = mGpsStatus.getSatellites();
+        int iTempCountInView = 0;
+        int iTempCountInUse = 0;
+        if (satellites != null) {
+            for (GpsSatellite gpsSatellite : satellites) {
+                iTempCountInView++;
+                if (gpsSatellite.usedInFix()) {
+                    iTempCountInUse++;
+                }
+            }
+        }
+        szSatellitesInView = String.valueOf(iTempCountInView);
+        szSatellitesInUse = String.valueOf(iTempCountInUse);
+        Log.d(TAG, "szSatellitesInView: "+ szSatellitesInView);
+        Log.d(TAG, "szSatellitesInUse: "+ szSatellitesInView);
+
         fusedLocationProviderClient.requestLocationUpdates(locationRequest, new LocationCallback(){
             @Override
             public void onLocationResult(LocationResult locationResult) {
@@ -82,19 +140,28 @@ public class LocationService extends Service {
                 if(location != null){
                     double la = location.getLatitude();
                     double lo = location.getLongitude();
-                    saveLocation(la, lo);
+                    double speed = location.getSpeed();
+                    saveLocation(la, lo, speed);
                 }
 
             }
         }, Looper.myLooper());
     }
 
-    private void saveLocation(double la, double lo) {
-        Intent i = new Intent("GPSLocationUpdates");
-        i.putExtra("la", la);
-        Log.d(TAG, "saveLocation: "+la);
-        i.putExtra("lo", lo);
-        LocalBroadcastManager.getInstance(this).sendBroadcast(i);
+    private void saveLocation(double la, double lo, double speed) {
+            Intent i = new Intent("GPSLocationUpdates");
+            i.putExtra("la", la);
+            Log.d(TAG, "saveLocation: "+la);
+            i.putExtra("lo", lo);
+            i.putExtra("speed", speed);
+            LocalBroadcastManager.getInstance(this).sendBroadcast(i);
+    }
 
+    private class GpsListener implements GpsStatus.Listener{
+
+        @Override
+        public void onGpsStatusChanged(int event) {
+
+        }
     }
 }

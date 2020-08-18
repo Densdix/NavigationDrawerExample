@@ -4,13 +4,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,11 +51,14 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMyLocationButt
     private double currentLatitude;
     private double currentLongitude;
 
+    private BroadcastReceiver br;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+
 
         return inflater.inflate(R.layout.fragment_maps, container, false);
     }
@@ -77,6 +85,19 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMyLocationButt
             mapFragment.getMapAsync(this);
         }
         client = LocationServices.getFusedLocationProviderClient(getContext());
+
+        br = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if(intent.getAction().equals("GPSLocationUpdates")){
+                    double la = intent.getExtras().getDouble("la");
+                    double lo = intent.getExtras().getDouble("lo");
+                    updateCamera(la, lo);
+                }
+
+            }
+        };
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(br, new IntentFilter("GPSLocationUpdates"));
     }
 
     public void cameraMoveToLastPosition() {
