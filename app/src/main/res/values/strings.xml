@@ -20,6 +20,6 @@
     <string name="nav_header_subtitle">mail@google.com</string>
     <string name="hide_location_marker">Hide Location Marker</string>
     <string name="show_location_marker">Show Location Marker</string>
-    <string name="location_data_info">latitude = %1$.2f\nlongitude = %2$.2f\nspeed = %3$.2f\ndistance = %4$.2f km.</string>
+    <string name="location_data_info">latitude = %1$.2f\nlongitude = %2$.2f\nspeed = %3$.2f m/s\ndistance = %4$.2f m.</string>
 
 </resources>

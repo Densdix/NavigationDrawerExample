@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Looper;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
@@ -34,6 +35,8 @@ public class LocationService extends Service {
     private static final String TAG = "LocationService";
     private FusedLocationProviderClient fusedLocationProviderClient;
     private LocationManager locationManager;
+    private LocationRequest locationRequest;
+    LocationCallback mLocationCallback;
 
     private boolean isGPSEnabled = false;
     private boolean isNetworkEnabled = false;
@@ -56,6 +59,18 @@ public class LocationService extends Service {
     public void onCreate() {
         super.onCreate();
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        mLocationCallback = new LocationCallback(){
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                Location location = locationResult.getLastLocation();
+                if(location != null){
+                    double la = location.getLatitude();
+                    double lo = location.getLongitude();
+                    double speed = location.getSpeed();
+                    saveLocation(la, lo, speed);
+                }
+            }
+        };
 
         if (Build.VERSION.SDK_INT >= 26) {
             String CHANNEL_ID = "my_channel_01";
@@ -78,7 +93,7 @@ public class LocationService extends Service {
     }
 
     private void getLocation() {
-        LocationRequest locationRequest = new LocationRequest();
+        locationRequest = new LocationRequest();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         locationRequest.setInterval(4000);
         locationRequest.setFastestInterval(2000);
@@ -133,20 +148,10 @@ public class LocationService extends Service {
         Log.d(TAG, "szSatellitesInView: "+ szSatellitesInView);
         Log.d(TAG, "szSatellitesInUse: "+ szSatellitesInView);
 
-        fusedLocationProviderClient.requestLocationUpdates(locationRequest, new LocationCallback(){
-            @Override
-            public void onLocationResult(LocationResult locationResult) {
-                Location location = locationResult.getLastLocation();
-                if(location != null){
-                    double la = location.getLatitude();
-                    double lo = location.getLongitude();
-                    double speed = location.getSpeed();
-                    saveLocation(la, lo, speed);
-                }
-
-            }
-        }, Looper.myLooper());
+        fusedLocationProviderClient.requestLocationUpdates(locationRequest, mLocationCallback, Looper.myLooper());
     }
+
+
 
     private void saveLocation(double la, double lo, double speed) {
             Intent i = new Intent("GPSLocationUpdates");
@@ -163,5 +168,12 @@ public class LocationService extends Service {
         public void onGpsStatusChanged(int event) {
 
         }
+    }
+
+
+    @Override
+    public void onDestroy() {
+        fusedLocationProviderClient.removeLocationUpdates(mLocationCallback);
+        super.onDestroy();
     }
 }

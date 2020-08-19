@@ -25,7 +25,13 @@ public class DistanceBetweenTwoPoints {
         // for miles
         double r = 6371;
 
+        double distanceInKilometers = (c * r);
+
+        double oneKilometerInMeter = 1000;
+
         // calculate the result
-        return(c * r);
+
+        //return meters
+        return distanceInKilometers * oneKilometerInMeter;
     }
 }
