@@ -92,6 +92,12 @@ public class MainActivity extends AppCompatActivity{
         });
 
         serviceIntent = new Intent(this, LocationService.class);
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            MainActivity.this.startForegroundService(serviceIntent);
+        }else{
+            startService(serviceIntent);
+        }
     }
 
     @Override
@@ -110,29 +116,38 @@ public class MainActivity extends AppCompatActivity{
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
-            case R.id.menu__service_start :
-                Toast.makeText(this, "Service has been started", Toast.LENGTH_SHORT).show();
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-                    MainActivity.this.startForegroundService(serviceIntent);
-                }else{
-                    startService(serviceIntent);
+            case R.id.menu__service_start_stop :
+                if(item.getTitle().equals(getString(R.string.stop_service))){
+                    stopService(serviceIntent);
+                    Toast.makeText(this, "Service has been stopped", Toast.LENGTH_SHORT).show();
+                    item.setTitle(getString(R.string.start_service));
+                    item.setIcon(R.drawable.ic_service_run);
                 }
-                // TODO: 31.07.2020 Add a behavior for STARTING_SERVICE instead of stub
+                else{
+                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+                        MainActivity.this.startForegroundService(serviceIntent);
+                    }else{
+                        startService(serviceIntent);
+                    }
+                    Toast.makeText(this, "Service has been started", Toast.LENGTH_SHORT).show();
+                    item.setTitle(getString(R.string.stop_service));
+                    item.setIcon(R.drawable.ic_service_stop);
+                }
                 return true;
-            case R.id.menu__service_stop:
-                stopService(serviceIntent);
-                // TODO: 31.07.2020 Add a behavior for STOPPING SERVICE instead of stub
-                Toast.makeText(this, "Service has been stopped", Toast.LENGTH_SHORT).show();
-                return true;
+
             case R.id.menu__center_map_picture:
                 ImageView imageView = findViewById(R.id.fragment_maps__location_marker);
                 if(item.getTitle().equals(getString(R.string.hide_location_marker))){
                     item.setTitle(getString(R.string.show_location_marker));
+                    item.setIcon(R.drawable.ic_show_marker);
                     imageView.setVisibility(View.INVISIBLE);
                 }else{
                     item.setTitle(getString(R.string.hide_location_marker));
+                    item.setIcon(R.drawable.ic_hide_marker);
                     imageView.setVisibility(View.VISIBLE);
                 }
+                return true;
+
             default: return super.onOptionsItemSelected(item);
         }
     }

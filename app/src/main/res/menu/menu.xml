@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/action_notification1"
+        android:icon="@drawable/ic__more_vert"
+        app:showAsAction="always"
+        android:title="action_notification">
+        <menu>
     <item
-        android:id="@+id/menu__service_start"
-        android:title="@string/start_service" />
-    <item
-        android:id="@+id/menu__service_stop"
-        android:title="@string/stop_service" />
+        android:id="@+id/menu__service_start_stop"
+        android:title="@string/stop_service"
+        android:icon="@drawable/ic_service_stop" />
     <item
         android:id="@+id/menu__center_map_picture"
-        android:title="@string/hide_location_marker" />
+        android:title="@string/hide_location_marker"
+        android:icon="@drawable/ic_hide_marker"/>
+        </menu>
+    </item>
 </menu>
