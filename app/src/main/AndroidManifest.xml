@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.leknos.navigationdrawerexample">
+    package="com.leknos.taxiadmintask">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name="com.leknos.taxiadmintask.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.SplashScreen">
             <intent-filter>
@@ -31,7 +31,7 @@
             android:value="@string/google_maps_key" />
 
         <service
-            android:name=".services.LocationService"
+            android:name="com.leknos.taxiadmintask.services.LocationService"
             android:stopWithTask="true"
             android:exported="false">
         </service>

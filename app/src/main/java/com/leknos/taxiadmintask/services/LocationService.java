@@ -1,4 +1,4 @@
-package com.leknos.navigationdrawerexample.services;
+package com.leknos.taxiadmintask.services;
 
 import android.Manifest;
 import android.app.Notification;
@@ -18,7 +18,6 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Looper;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
@@ -77,7 +76,7 @@ public class LocationService extends Service {
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "MyChannel", NotificationManager.IMPORTANCE_DEFAULT);
             ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).createNotificationChannel(channel);
             Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                    .setContentTitle("NavigationDrawerExample")
+                    .setContentTitle("TaxiAdminTask")
                     .setContentText("updating location every 4 seconds")
                     .build();
             startForeground(1, notification);

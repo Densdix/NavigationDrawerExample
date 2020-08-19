@@ -1,4 +1,4 @@
-package com.leknos.navigationdrawerexample;
+package com.leknos.taxiadmintask;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,8 +9,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.leknos.navigationdrawerexample.model.Photo;
-import com.leknos.navigationdrawerexample.utils.CircleTransform;
+import com.leknos.taxiadmintask.model.Photo;
+import com.leknos.taxiadmintask.utils.CircleTransform;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

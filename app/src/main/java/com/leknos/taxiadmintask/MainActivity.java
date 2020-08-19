@@ -1,4 +1,4 @@
-package com.leknos.navigationdrawerexample;
+package com.leknos.taxiadmintask;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -22,7 +22,7 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
-import com.leknos.navigationdrawerexample.services.LocationService;
+import com.leknos.taxiadmintask.services.LocationService;
 
 public class MainActivity extends AppCompatActivity{
 

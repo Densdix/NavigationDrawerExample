@@ -1,4 +1,4 @@
-package com.leknos.navigationdrawerexample.model;
+package com.leknos.taxiadmintask.model;
 
 public class Photo {
     private int albumId;

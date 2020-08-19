@@ -4,7 +4,7 @@ android {
     compileSdkVersion 29
 
     defaultConfig {
-        applicationId "com.leknos.navigationdrawerexample"
+        applicationId "com.leknos.taxiadmintask"
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 1

@@ -1,4 +1,4 @@
-package com.leknos.navigationdrawerexample;
+package com.leknos.taxiadmintask;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("com.leknos.navigationdrawerexample", appContext.getPackageName());
+        assertEquals("com.leknos.com.leknos.taxiadmintask", appContext.getPackageName());
     }
 }

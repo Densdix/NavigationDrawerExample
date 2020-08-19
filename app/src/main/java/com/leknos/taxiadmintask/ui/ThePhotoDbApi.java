@@ -1,6 +1,6 @@
-package com.leknos.navigationdrawerexample.ui;
+package com.leknos.taxiadmintask.ui;
 
-import com.leknos.navigationdrawerexample.model.Photo;
+import com.leknos.taxiadmintask.model.Photo;
 
 import java.util.List;
 

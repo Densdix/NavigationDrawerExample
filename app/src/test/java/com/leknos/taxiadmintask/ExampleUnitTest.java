@@ -1,4 +1,4 @@
-package com.leknos.navigationdrawerexample;
+package com.leknos.taxiadmintask;
 
 import org.junit.Test;
 

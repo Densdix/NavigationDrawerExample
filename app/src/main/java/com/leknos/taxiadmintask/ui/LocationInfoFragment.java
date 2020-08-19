@@ -1,4 +1,4 @@
-package com.leknos.navigationdrawerexample.ui;
+package com.leknos.taxiadmintask.ui;
 
 import android.Manifest;
 import android.content.BroadcastReceiver;
@@ -6,9 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.location.GnssStatus;
 import android.location.Location;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -26,8 +24,8 @@ import android.widget.TextView;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.leknos.navigationdrawerexample.R;
-import com.leknos.navigationdrawerexample.utils.DistanceBetweenTwoPoints;
+import com.leknos.taxiadmintask.R;
+import com.leknos.taxiadmintask.utils.DistanceBetweenTwoPoints;
 
 public class LocationInfoFragment extends Fragment {
     private TextView textView;

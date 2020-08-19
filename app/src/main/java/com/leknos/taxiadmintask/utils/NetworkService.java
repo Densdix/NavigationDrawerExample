@@ -1,6 +1,6 @@
-package com.leknos.navigationdrawerexample.utils;
+package com.leknos.taxiadmintask.utils;
 
-import com.leknos.navigationdrawerexample.ui.ThePhotoDbApi;
+import com.leknos.taxiadmintask.ui.ThePhotoDbApi;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

@@ -1,4 +1,4 @@
-package com.leknos.navigationdrawerexample.ui;
+package com.leknos.taxiadmintask.ui;
 
 import android.os.Bundle;
 
@@ -14,14 +14,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.leknos.navigationdrawerexample.MainActivity;
-import com.leknos.navigationdrawerexample.PhotosListAdapter;
-import com.leknos.navigationdrawerexample.R;
-import com.leknos.navigationdrawerexample.model.Photo;
-import com.leknos.navigationdrawerexample.utils.NetworkService;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.leknos.taxiadmintask.MainActivity;
+import com.leknos.taxiadmintask.PhotosListAdapter;
+import com.leknos.taxiadmintask.R;
+import com.leknos.taxiadmintask.model.Photo;
+import com.leknos.taxiadmintask.utils.NetworkService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,8 +32,6 @@ public class ListFragment extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private PhotosListAdapter mAdapter;
-
-    // TODO: 01.08.2020 Добавить RecycleView и Retrofit 2 для парсинга GET запроса
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

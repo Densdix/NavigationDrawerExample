@@ -6,17 +6,17 @@
     app:startDestination="@id/drawer_menu__nav_map">
     <fragment
         android:id="@+id/drawer_menu__nav_map"
-        android:name="com.leknos.navigationdrawerexample.ui.MapsFragment"
+        android:name="com.leknos.taxiadmintask.ui.MapsFragment"
         android:label="@string/map"
         tools:layout="@layout/fragment_maps" />
     <fragment
         android:id="@+id/drawer_menu__nav_list"
-        android:name="com.leknos.navigationdrawerexample.ui.ListFragment"
+        android:name="com.leknos.taxiadmintask.ui.ListFragment"
         android:label="@string/list"
         tools:layout="@layout/fragment_list" />
     <fragment
         android:id="@+id/drawer_menu__nav_location_info"
-        android:name="com.leknos.navigationdrawerexample.ui.LocationInfoFragment"
+        android:name="com.leknos.taxiadmintask.ui.LocationInfoFragment"
         android:label="@string/location_info"
         tools:layout="@layout/fragment_location_info" />
 </navigation>
